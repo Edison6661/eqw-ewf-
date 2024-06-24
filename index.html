@@ -97,29 +97,26 @@
                     const outputContainer = document.getElementById('outputContainer');
                     outputContainer.innerHTML = ''; // Clear previous results
 
-                    // Extracting the first header (h1, h2, h3)
-                    const header = doc.querySelector('h1, h2, h3');
-                    if (header) {
-                        const headerElement = document.createElement('h2');
-                        headerElement.textContent = header.textContent;
-                        outputContainer.appendChild(headerElement);
-                    }
+                    // Extracting div elements with class
+                    const divElements = doc.querySelectorAll('div[class]');
+                    divElements.forEach(div => {
+                        const divElement = document.createElement('div');
+                        divElement.innerHTML = div.innerHTML;
+                        outputContainer.appendChild(divElement);
+                    });
 
-                    // Extracting the first paragraph (p)
-                    const paragraph = doc.querySelector('p');
-                    if (paragraph) {
-                        const pElement = document.createElement('p');
-                        pElement.textContent = paragraph.textContent;
-                        outputContainer.appendChild(pElement);
-                    }
-
-                    // Extracting the first image (img)
-                    const image = doc.querySelector('img');
-                    if (image) {
+                    // Extracting images without links
+                    const images = doc.querySelectorAll('img:not([src^="http"])');
+                    images.forEach(image => {
                         const imgElement = document.createElement('img');
                         imgElement.src = image.src;
+                        imgElement.style.maxWidth = '100%';
+                        imgElement.style.height = 'auto';
+                        imgElement.style.marginBottom = '10px';
+                        imgElement.style.borderRadius = '8px';
+                        imgElement.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.1)';
                         outputContainer.appendChild(imgElement);
-                    }
+                    });
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
